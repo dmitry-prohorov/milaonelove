@@ -5,5 +5,5 @@ FROM node:slim
 # RUN npm ci --only=production
 
 # start
-COPY . .
-ENTRYPOINT ["dist/index.js"]
+COPY ./dist/index.js .
+ENTRYPOINT ["index.js"]
