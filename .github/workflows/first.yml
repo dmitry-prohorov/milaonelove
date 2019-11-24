@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v1
       - name: first job
         id: firstjob
-        uses: ./first-docker-action # Uses an action in the root directory
+        uses: ./actions/first-docker-action # Uses an action in the root directory
         with:
           first-arg: ${{ secrets.GITHUB_TOKEN }}
           second-arg: "SECOND ARG"
