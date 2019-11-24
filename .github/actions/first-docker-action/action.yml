@@ -1,0 +1,16 @@
+name: "My First Action"
+description: "Check project structure"
+inputs:
+  first-arg:
+    description: "first argument"
+  second-arg:
+    description: "second argument"
+outputs:
+  project-structure: # id of output
+    description: "project structure"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.first-arg }}
+    - ${{ inputs.second-arg }}
