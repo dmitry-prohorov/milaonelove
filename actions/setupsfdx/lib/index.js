@@ -4681,14 +4681,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 const fs = __importStar(__webpack_require__(747));
-const v4_1 = __importDefault(__webpack_require__(826));
 const child_process_1 = __webpack_require__(129);
 const util_1 = __webpack_require__(669);
 let tempDirectory = process.env["RUNNER_TEMP"] || "";
@@ -4723,6 +4719,7 @@ const io = __importStar(__webpack_require__(1));
 const tc = __importStar(__webpack_require__(533));
 function getSfdxCli() {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(yield fs.promises.readFile(sfdxCliVersionFile, "utf8"));
         // always check latest version
         let toolPath = tc.find("sfdx-cli", "latest");
         // If not found in cache => download, extract, cache
@@ -4746,6 +4743,7 @@ function getSfdxCli() {
         if (stdout) {
             const version = (stdout.split(" ").shift() || "").replace("/", "-v");
             yield saveLatestVersion(version);
+            console.log(yield fs.promises.readFile(sfdxCliVersionFile, "utf8"));
         }
     });
 }
@@ -4793,24 +4791,6 @@ function acquireSfdxCli() {
         //
         let toolRoot = path.join(extPath, fileName);
         return yield tc.cacheDir(toolRoot, "sfdx-cli", "latest");
-    });
-}
-function extractTar(file, dest, flags = "xz") {
-    return __awaiter(this, void 0, void 0, function* () {
-        dest = dest || (yield _createExtractFolder(dest));
-        const tarPath = yield io.which("tar", true);
-        yield exec.exec(`"${tarPath}"`, [flags, "-C", `${dest}/`, "-f", file]);
-        return dest;
-    });
-}
-function _createExtractFolder(dest) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!dest) {
-            // create a temp dir
-            dest = path.join(tempDirectory, v4_1.default());
-        }
-        yield io.mkdirP(dest);
-        return dest;
     });
 }
 function getLatestVersion() {

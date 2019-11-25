@@ -38,6 +38,7 @@ import * as io from "@actions/io";
 import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
+  console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   // always check latest version
   let toolPath = tc.find("sfdx-cli", "latest");
 
@@ -66,6 +67,7 @@ export async function getSfdxCli() {
   if (stdout) {
     const version = (stdout.split(" ").shift() || "").replace("/", "-v");
     await saveLatestVersion(version);
+    console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   }
 }
 
@@ -115,27 +117,6 @@ async function acquireSfdxCli(): Promise<string> {
   //
   let toolRoot = path.join(extPath, fileName);
   return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
-}
-
-async function extractTar(
-  file: string,
-  dest?: string,
-  flags: string = "xz"
-): Promise<string> {
-  dest = dest || (await _createExtractFolder(dest));
-  const tarPath: string = await io.which("tar", true);
-  await exec.exec(`"${tarPath}"`, [flags, "-C", `${dest}/`, "-f", file]);
-
-  return dest;
-}
-
-async function _createExtractFolder(dest?: string): Promise<string> {
-  if (!dest) {
-    // create a temp dir
-    dest = path.join(tempDirectory, uuidV4());
-  }
-  await io.mkdirP(dest);
-  return dest;
 }
 
 async function getLatestVersion(): Promise<string> {
