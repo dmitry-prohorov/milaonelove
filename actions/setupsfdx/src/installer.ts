@@ -35,6 +35,8 @@ import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
+  console.log(tc.findAllVersions("node"));
+  console.log(tc.findAllVersions("sfdx"));
   console.log(
     await fs.promises.readdir(
       path.resolve(<string>process.env["RUNNER_TOOL_CACHE"])
@@ -66,15 +68,6 @@ export async function getSfdxCli() {
   // prepend the tools path. instructs the agent to prepend for future tasks
   core.addPath(toolPath);
   console.log(process.env["PATH"]);
-  // update sfdx cli to latest version
-  await exec.exec("sfdx", ["update"]);
-
-  const { stdout } = await execa("sfdx version");
-  if (stdout) {
-    const version = (stdout.split(" ").shift() || "").replace("/", "-v");
-    console.log("version: ", version);
-    await saveLatestVersion(version);
-  }
 }
 
 async function acquireSfdxCli(): Promise<string> {
