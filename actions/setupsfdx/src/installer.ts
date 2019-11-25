@@ -142,6 +142,8 @@ async function cleanVersions(latestVersion: string): Promise<void> {
   }
 }
 
+async function extractWinExe() {}
+
 // map arch to download dist url format
 // @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm
 function translateArchToDistUrl(arch: string): string {
