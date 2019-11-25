@@ -4774,7 +4774,8 @@ function acquireSfdxCli(versionSpec) {
         let extPath;
         if (osPlat === "win32") {
             // let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
-            extPath = yield tc.extract7z(downloadPath);
+            // extPath = await tc.extract7z(downloadPath);
+            extPath = yield extractWin(downloadPath);
         }
         else {
             extPath = yield tc.extractTar(downloadPath, undefined, "xJ");
@@ -4814,8 +4815,16 @@ function cleanVersions(latestVersion) {
         }
     });
 }
-function extractWinExe() {
-    return __awaiter(this, void 0, void 0, function* () { });
+function extractWin(downloadPath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Create temporary folder to download in to
+        let tempDownloadFolder = "temp_" + Math.floor(Math.random() * 2000000000);
+        let tempDir = path.join(tempDirectory, tempDownloadFolder);
+        yield io.mkdirP(tempDir);
+        const exePath = yield tc.downloadTool(downloadPath);
+        yield io.cp(exePath, path.join(tempDir, "node.exe"));
+        return tempDir;
+    });
 }
 // map arch to download dist url format
 // @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm

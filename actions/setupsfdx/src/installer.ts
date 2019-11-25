@@ -100,7 +100,8 @@ async function acquireSfdxCli(versionSpec: string): Promise<string> {
   let extPath: string;
   if (osPlat === "win32") {
     // let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
-    extPath = await tc.extract7z(downloadPath);
+    // extPath = await tc.extract7z(downloadPath);
+    extPath = await extractWin(downloadPath);
   } else {
     extPath = await tc.extractTar(downloadPath, undefined, "xJ");
   }
@@ -143,7 +144,17 @@ async function cleanVersions(latestVersion: string): Promise<void> {
   }
 }
 
-async function extractWinExe() {}
+async function extractWin(downloadPath: string): Promise<string> {
+  // Create temporary folder to download in to
+  let tempDownloadFolder: string =
+    "temp_" + Math.floor(Math.random() * 2000000000);
+  let tempDir: string = path.join(tempDirectory, tempDownloadFolder);
+  await io.mkdirP(tempDir);
+  const exePath = await tc.downloadTool(downloadPath);
+  await io.cp(exePath, path.join(tempDir, "node.exe"));
+
+  return tempDir;
+}
 
 // map arch to download dist url format
 // @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm
