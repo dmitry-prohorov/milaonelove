@@ -2,11 +2,13 @@ import * as os from "os";
 import * as path from "path";
 import * as fs from "fs";
 import * as semver from "semver";
+import { exec as childExec } from "child_process";
+import { promisify } from "util";
 let tempDirectory = process.env["RUNNER_TEMP"] || "";
 let osPlat: string = os.platform();
-// specify hardcoded latest version which will be update in future
+// current latest sfdx cli version
 const DEFAULT_LATEST_VERSION = "7.33.2-045d48473e";
-// https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/sfdx-cli-v6.56.0-e3fd846a1f-x86.exe
+const execa = promisify(childExec);
 
 if (!tempDirectory) {
   let baseLocation;
@@ -26,32 +28,38 @@ if (!tempDirectory) {
   }
   tempDirectory = path.join(baseLocation, "actions", "temp");
 }
-// const tempSfdxCliVersionFile = path.resolve(tempDirectory, "version.txt");
 
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
+import * as io from "@actions/io";
 
 export async function getSfdxCli() {
-  console.log(tc.findAllVersions("node"));
   console.log(tc.findAllVersions("sfdx"));
   console.log(
     await fs.promises.readdir(
       path.resolve(<string>process.env["RUNNER_TOOL_CACHE"])
     )
   );
-  const versionSpec = semver.clean(DEFAULT_LATEST_VERSION);
-  console.log("versionSpec: ", versionSpec);
+
+  let latestVersion = tc.findAllVersions("sfdx").reduce((result, version) => {
+    if (semver.lt(result, version)) {
+      result = version;
+    }
+    return result;
+  }, DEFAULT_LATEST_VERSION);
+  core.debug(`Latest version found is: ${latestVersion}`);
+
   // always check latest version
-  let toolPath = tc.find("sfdx", versionSpec);
-  console.log("toolPath: ", toolPath);
+  let toolPath = tc.find("sfdx", latestVersion);
+  let tryToUpdate = true;
 
   // If not found in cache => download, extract, cache
   if (!toolPath) {
-    toolPath = await acquireSfdxCli(versionSpec);
+    toolPath = await acquireSfdxCli(latestVersion);
+    tryToUpdate = false;
+  } else {
+    core.debug(`Tool found in cache ${toolPath}`);
   }
-
-  console.log("toolPath: ", toolPath);
-  console.log(await fs.promises.readdir(toolPath));
 
   //
   // a tool installer initimately knows details about the layout of that tool
@@ -62,11 +70,14 @@ export async function getSfdxCli() {
     toolPath = path.join(toolPath, "bin");
   }
 
-  console.log(await fs.promises.readdir(toolPath));
   //
   // prepend the tools path. instructs the agent to prepend for future tasks
   core.addPath(toolPath);
-  console.log(process.env["PATH"]);
+
+  // try to update cli
+  if (tryToUpdate) {
+    await updateCli();
+  }
 }
 
 async function acquireSfdxCli(versionSpec: string): Promise<string> {
@@ -105,29 +116,35 @@ async function acquireSfdxCli(versionSpec: string): Promise<string> {
   return await tc.cacheDir(toolRoot, "sfdx", versionSpec);
 }
 
-// async function getLatestVersion(): Promise<string> {
-//   const toolVersionPath = tc.find("sfdx-cli", "latest");
-//   console.log("request sfdx-cli-version: ", toolVersionPath);
-//   if (!toolVersionPath) {
-//     await saveLatestVersion(DEFAULT_LATEST_VERSION);
-//     console.log(
-//       "request sfdx-cli-version: ",
-//       tc.find("sfdx-cli-version", "latest")
-//     );
-//     return DEFAULT_LATEST_VERSION;
-//   }
+async function updateCli(): Promise<void> {
+  core.debug("Update CLI version");
+  console.log("Update cli");
+  const { stdout } = await execa("sfdx update");
+  const latestVersion =
+    ((stdout || "").split(" ").shift() || "").split("/").pop() || "";
 
-//   return toolVersionPath;
-// }
+  await cleanVersions(latestVersion);
+}
 
-// async function saveLatestVersion(version: string): Promise<string> {
-//   // Create folder to store sfdx-cli version
-//   await fs.promises.writeFile(tempSfdxCliVersionFile, version, {
-//     encoding: "utf8"
-//   });
+// we keep only latest version and DEFAULT_LATEST_VERSION
+// so all other version should be removed
+async function cleanVersions(latestVersion: string): Promise<void> {
+  if (!latestVersion) return;
 
-//   return tc.cacheFile(tempSfdxCliVersionFile, "version.txt", "sfdx", "latest");
-// }
+  core.debug("Clean old versions");
+  const versionsToDelete = tc
+    .findAllVersions("sfdx")
+    .filter(
+      version => version !== latestVersion && version !== DEFAULT_LATEST_VERSION
+    );
+
+  for (let i = 0; i <= versionsToDelete.length; i++) {
+    const versionPath = tc.find("sfdx", versionsToDelete[i]);
+    if (versionPath) {
+      await io.rmRF(versionPath);
+    }
+  }
+}
 
 // map arch to download dist url format https://developer.salesforce.com/media/salesforce-cli
 function translateArchToDistUrl(arch: string): string {
