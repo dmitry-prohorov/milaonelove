@@ -5,15 +5,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
-    name: setup sfdx
+        os: [macos-latest, ubuntu-16.04, ubuntu-latest]
+    name: OS ${{ matrix.os }} sample
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup sfdx
         uses: ./actions/setupsfdx
-      - name: Verify sfdx
-        run: which sfdx
+      - name: Check sfdx
+        run: sfdx version
       - name: Setup node
         uses: actions/setup-node@v1
       - name: Setup sfdx
@@ -24,3 +24,5 @@ jobs:
         run: echo $PATH
       - name: Verify npm
         run: npm --version
+      - name: Verify sfdx
+        run: sfdx version
