@@ -6,4 +6,4 @@ FROM node:slim
 
 # start
 COPY ./dist/index.js /index.js
-ENTRYPOINT ["index.js"]
+ENTRYPOINT ["/index.js"]
