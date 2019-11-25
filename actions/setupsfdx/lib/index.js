@@ -4821,8 +4821,7 @@ function extractWin(downloadPath) {
         let tempDownloadFolder = "temp_" + Math.floor(Math.random() * 2000000000);
         let tempDir = path.join(tempDirectory, tempDownloadFolder);
         yield io.mkdirP(tempDir);
-        const exePath = yield tc.downloadTool(downloadPath);
-        yield io.cp(exePath, path.join(tempDir, "node.exe"));
+        yield io.cp(downloadPath, path.join(tempDir, "sfdx.exe"));
         return tempDir;
     });
 }

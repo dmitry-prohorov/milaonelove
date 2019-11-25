@@ -150,8 +150,8 @@ async function extractWin(downloadPath: string): Promise<string> {
     "temp_" + Math.floor(Math.random() * 2000000000);
   let tempDir: string = path.join(tempDirectory, tempDownloadFolder);
   await io.mkdirP(tempDir);
-  const exePath = await tc.downloadTool(downloadPath);
-  await io.cp(exePath, path.join(tempDir, "node.exe"));
+
+  await io.cp(downloadPath, path.join(tempDir, "sfdx.exe"));
 
   return tempDir;
 }
