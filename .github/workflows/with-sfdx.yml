@@ -13,7 +13,7 @@ jobs:
       - name: Setup sfdx
         uses: ./actions/setupsfdx
       - name: Verify sfdx
-        run: sfdx version
+        run: ls -lat
       - name: Setup node
         uses: actions/setup-node@v1
       - name: Check path

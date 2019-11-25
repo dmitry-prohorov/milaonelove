@@ -6,7 +6,7 @@ import { promisify } from "util";
 let tempDirectory = process.env["RUNNER_TEMP"] || "";
 let osPlat: string = os.platform();
 // specify hardcoded latest version which will be update in future
-const DEFAULT_LATEST_VERSION = "sfdx-cli-v6.56.0-e3fd846a1f";
+const DEFAULT_LATEST_VERSION = "sfdx-cli-v7.33.2-045d48473e";
 const execa = promisify(childExec);
 // https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/sfdx-cli-v6.56.0-e3fd846a1f-x86.exe
 
