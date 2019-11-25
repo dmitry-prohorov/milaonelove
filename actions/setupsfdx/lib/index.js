@@ -4768,7 +4768,7 @@ function acquireSfdxCli() {
             urlFileName = `${fileName}.tar.xz`;
         }
         console.log(`download url: ${urlBase}/${fileName}`);
-        const downloadPath = yield tc.downloadTool(`${urlBase}/${fileName}`);
+        const downloadPath = yield tc.downloadTool(`${urlBase}/${urlFileName}`);
         //
         // Extract
         //

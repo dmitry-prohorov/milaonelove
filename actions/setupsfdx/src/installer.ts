@@ -87,7 +87,9 @@ async function acquireSfdxCli(): Promise<string> {
     urlFileName = `${fileName}.tar.xz`;
   }
   console.log(`download url: ${urlBase}/${fileName}`);
-  const downloadPath: string = await tc.downloadTool(`${urlBase}/${fileName}`);
+  const downloadPath: string = await tc.downloadTool(
+    `${urlBase}/${urlFileName}`
+  );
 
   //
   // Extract
