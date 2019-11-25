@@ -78,10 +78,13 @@ async function acquireSfdxCli(): Promise<string> {
   const osArch: string = translateArchToDistUrl(os.arch());
 
   let fileName: string;
+  let urlFileName: string;
   if (osPlat === "win32") {
-    fileName = `${version}-${osArch}.exe`;
+    fileName = `${version}-${osArch}`;
+    urlFileName = `${fileName}.exe`;
   } else {
-    fileName = `${version}-${osPlat}-${osArch}.tar.xz`;
+    fileName = `${version}-${osPlat}-${osArch}`;
+    urlFileName = `${fileName}.tar.xz`;
   }
   console.log(`download url: ${urlBase}/${fileName}`);
   const downloadPath: string = await tc.downloadTool(`${urlBase}/${fileName}`);
@@ -104,6 +107,7 @@ async function acquireSfdxCli(): Promise<string> {
 
   console.log(extPath);
   console.log(await fs.promises.readdir(extPath));
+  console.log(await fs.promises.readdir(path.join(extPath, fileName)));
   //
   // Install into the local tool cache - node extracts with a root folder that matches the fileName downloaded
   //

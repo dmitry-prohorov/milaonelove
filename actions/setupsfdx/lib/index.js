@@ -4758,11 +4758,14 @@ function acquireSfdxCli() {
         // sfdx-cli-v7.33.2-045d48473e-darwin-x64.tar.xz
         const osArch = translateArchToDistUrl(os.arch());
         let fileName;
+        let urlFileName;
         if (osPlat === "win32") {
-            fileName = `${version}-${osArch}.exe`;
+            fileName = `${version}-${osArch}`;
+            urlFileName = `${fileName}.exe`;
         }
         else {
-            fileName = `${version}-${osPlat}-${osArch}.tar.xz`;
+            fileName = `${version}-${osPlat}-${osArch}`;
+            urlFileName = `${fileName}.tar.xz`;
         }
         console.log(`download url: ${urlBase}/${fileName}`);
         const downloadPath = yield tc.downloadTool(`${urlBase}/${fileName}`);
@@ -4784,6 +4787,7 @@ function acquireSfdxCli() {
         }
         console.log(extPath);
         console.log(yield fs.promises.readdir(extPath));
+        console.log(yield fs.promises.readdir(path.join(extPath, fileName)));
         //
         // Install into the local tool cache - node extracts with a root folder that matches the fileName downloaded
         //
