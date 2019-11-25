@@ -46,11 +46,13 @@ export async function getSfdxCli() {
     toolPath = await acquireSfdxCli();
   }
 
+  console.log("toolPath: ", toolPath);
   console.log(
     await fs.promises.readdir(
       path.resolve(<string>process.env["RUNNER_TOOL_CACHE"])
     )
   );
+  console.log(await fs.promises.readdir(toolPath));
 
   //
   // a tool installer initimately knows details about the layout of that tool
