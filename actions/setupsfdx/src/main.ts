@@ -5,6 +5,7 @@ async function run() {
   try {
     await installer.getSfdxCli();
   } catch (error) {
+    console.log(error);
     core.setFailed(error.message);
   }
 }
