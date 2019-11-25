@@ -9,8 +9,8 @@ outputs:
   project-structure: # id of output
     description: "project structure"
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: "node12"
+  main: "index.js"
   args:
     - ${{ inputs.first-arg }}
     - ${{ inputs.second-arg }}

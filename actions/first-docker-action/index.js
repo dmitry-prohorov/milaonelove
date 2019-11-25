@@ -14,6 +14,7 @@ async function run() {
     // // Get the JSON webhook payload for the event that triggered the workflow
     // const payload = JSON.stringify(github.context.payload, undefined, 2);
     // console.log(`The event payload: ${payload}`);
+    console.log(process.argv);
     console.log(process.env["INPUT_FIRST-ARG"]);
     console.log(process.env["INPUT_SECOND-ARG"]);
     console.log(process.env["HOME"]);
