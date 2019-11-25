@@ -98,7 +98,7 @@ async function acquireSfdxCli(): Promise<string> {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
     extPath = await tc.extract7z(downloadPath, undefined, _7zPath);
   } else {
-    extPath = await tc.extractTar(downloadPath, undefined, "xzM");
+    extPath = await tc.extractTar(downloadPath, undefined, "xJ");
   }
 
   //
