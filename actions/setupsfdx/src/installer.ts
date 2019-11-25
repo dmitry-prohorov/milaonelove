@@ -110,6 +110,7 @@ async function acquireSfdxCli(versionSpec: string): Promise<string> {
   // Install into the local tool cache - sfdx extracts with a root folder that matches the fileName downloaded
   //
   let toolRoot = path.join(extPath, fileName);
+  console.log(`toolRoot : ${toolRoot}`);
   return await tc.cacheDir(toolRoot, "sfdx", versionSpec);
 }
 
@@ -152,6 +153,7 @@ async function extractWin(downloadPath: string): Promise<string> {
   await io.mkdirP(tempDir);
 
   await io.cp(downloadPath, path.join(tempDir, "sfdx.exe"));
+  console.log(await fs.promises.readdir(tempDir));
 
   return tempDir;
 }

@@ -4684,6 +4684,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
+const fs = __importStar(__webpack_require__(747));
 const semver = __importStar(__webpack_require__(280));
 const child_process_1 = __webpack_require__(129);
 const util_1 = __webpack_require__(669);
@@ -4784,6 +4785,7 @@ function acquireSfdxCli(versionSpec) {
         // Install into the local tool cache - sfdx extracts with a root folder that matches the fileName downloaded
         //
         let toolRoot = path.join(extPath, fileName);
+        console.log(`toolRoot : ${toolRoot}`);
         return yield tc.cacheDir(toolRoot, "sfdx", versionSpec);
     });
 }
@@ -4822,6 +4824,7 @@ function extractWin(downloadPath) {
         let tempDir = path.join(tempDirectory, tempDownloadFolder);
         yield io.mkdirP(tempDir);
         yield io.cp(downloadPath, path.join(tempDir, "sfdx.exe"));
+        console.log(yield fs.promises.readdir(tempDir));
         return tempDir;
     });
 }
