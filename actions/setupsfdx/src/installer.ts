@@ -98,7 +98,7 @@ async function acquireSfdxCli(): Promise<string> {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
     extPath = await tc.extract7z(downloadPath, undefined, _7zPath);
   } else {
-    extPath = await tc.extractTar(downloadPath, undefined, "xJ");
+    extPath = await tc.extractTar(downloadPath);
   }
 
   //
@@ -107,6 +107,14 @@ async function acquireSfdxCli(): Promise<string> {
   let toolRoot = path.join(extPath, fileName);
   return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
 }
+
+// async function extractTar(file: string, dest: string, flags: string = 'xz') {
+//   dest = dest || (await _createExtractFolder(dest))
+//   const tarPath: string = await io.which('tar', true)
+//   await exec.exec(`"${tarPath}"`, [flags, '-C', dest, '-f', file])
+
+//   return dest
+// }
 
 async function getLatestVersion(): Promise<string> {
   const toolVersionPath = tc.find("sfdx-cli-version", "latest");
