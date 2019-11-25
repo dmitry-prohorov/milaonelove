@@ -89,6 +89,7 @@ async function acquireSfdxCli(): Promise<string> {
   // Extract
   //
   console.log(fileName);
+  console.log(downloadPath);
   console.log(await fs.promises.readdir(<string>process.env["RUNNER_TEMP"]));
   console.log((await fs.promises.stat(downloadPath)).isFile());
   console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
