@@ -4825,10 +4825,11 @@ function extractWin(downloadPath) {
         let tempDownloadFolder = "temp_" + Math.floor(Math.random() * 2000000000);
         let tempDir = path.join(tempDirectory, tempDownloadFolder);
         yield io.mkdirP(tempDir);
-        yield io.cp(downloadPath, path.join(tempDir, "sfdx.zip"));
+        yield io.cp(downloadPath, path.join(tempDir, "sfdx.exe"));
         console.log(yield fs.promises.readdir(tempDir));
+        console.log(yield io.which("Setup.exe"));
         let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
-        return yield tc.extract7z(path.join(tempDir, "sfdx.zip"), undefined, _7zPath);
+        return yield tc.extract7z(path.join(tempDir, "sfdx.exe"), undefined, _7zPath);
     });
 }
 // map arch to download dist url format
