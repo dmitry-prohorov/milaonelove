@@ -100,6 +100,11 @@ async function acquireSfdxCli(): Promise<string> {
   console.log(
     await fs.promises.readdir(<string>process.env["RUNNER_TOOL_CACHE"])
   );
+  console.log(
+    await fs.promises.readdir(
+      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"], "sfdx-cli")
+    )
+  );
 
   console.log((await fs.promises.stat(downloadPath)).isFile());
   let extPath: string;
