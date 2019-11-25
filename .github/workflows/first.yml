@@ -12,10 +12,10 @@ jobs:
         uses: actions/setup-node@v1
       - name: First Job
         id: firstjob
+        uses: ./actions/first-docker-action/dist/index.js
         with:
           first-arg: ${{ secrets.GITHUB_TOKEN }}
           second-arg: "SECOND ARG"
-        run: ./actions/first-docker-action/dist/index.js
       # - name: first job
       #   id: firstjob
       #   uses: ./actions/first-docker-action # Uses an action in the root directory
