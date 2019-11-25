@@ -4828,8 +4828,9 @@ function extractWin(downloadPath) {
         yield io.cp(downloadPath, path.join(tempDir, "sfdx.exe"));
         console.log(yield fs.promises.readdir(tempDir));
         console.log(yield io.which("Setup.exe"));
-        let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
-        return yield tc.extract7z(path.join(tempDir, "sfdx.exe"), undefined, _7zPath);
+        // let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
+        return "jopa";
+        // return await tc.extract7z(path.join(tempDir, "sfdx.exe"), undefined, _7zPath);
     });
 }
 // map arch to download dist url format
