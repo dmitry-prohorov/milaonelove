@@ -4773,18 +4773,20 @@ function acquireSfdxCli(versionSpec) {
         // Extract
         //
         let extPath;
+        let toolRoot;
         if (osPlat === "win32") {
             // let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
             // extPath = await tc.extract7z(downloadPath);
-            extPath = yield extractWin(downloadPath);
+            toolRoot = yield extractWin(downloadPath);
         }
         else {
             extPath = yield tc.extractTar(downloadPath, undefined, "xJ");
+            toolRoot = path.join(extPath, fileName);
         }
         //
         // Install into the local tool cache - sfdx extracts with a root folder that matches the fileName downloaded
         //
-        let toolRoot = path.join(extPath, fileName);
+        // let toolRoot = path.join(extPath, fileName);
         console.log(`toolRoot : ${toolRoot}`);
         return yield tc.cacheDir(toolRoot, "sfdx", versionSpec);
     });

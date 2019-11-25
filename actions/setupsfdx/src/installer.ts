@@ -98,18 +98,20 @@ async function acquireSfdxCli(versionSpec: string): Promise<string> {
   // Extract
   //
   let extPath: string;
+  let toolRoot: string;
   if (osPlat === "win32") {
     // let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
     // extPath = await tc.extract7z(downloadPath);
-    extPath = await extractWin(downloadPath);
+    toolRoot = await extractWin(downloadPath);
   } else {
     extPath = await tc.extractTar(downloadPath, undefined, "xJ");
+    toolRoot = path.join(extPath, fileName);
   }
 
   //
   // Install into the local tool cache - sfdx extracts with a root folder that matches the fileName downloaded
   //
-  let toolRoot = path.join(extPath, fileName);
+  // let toolRoot = path.join(extPath, fileName);
   console.log(`toolRoot : ${toolRoot}`);
   return await tc.cacheDir(toolRoot, "sfdx", versionSpec);
 }
