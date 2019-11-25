@@ -8,12 +8,20 @@ jobs:
       # To use this repository's private action, you must check out the repository
       - name: Checkout
         uses: actions/checkout@v1
-      - name: first job
+      - name: Setup node
+        uses: actions/setup-node@v1
+      - name: First Job
         id: firstjob
-        uses: ./actions/first-docker-action # Uses an action in the root directory
         with:
           first-arg: ${{ secrets.GITHUB_TOKEN }}
           second-arg: "SECOND ARG"
+        run: ./actions/first-docker-action/dist/index.js
+      # - name: first job
+      #   id: firstjob
+      #   uses: ./actions/first-docker-action # Uses an action in the root directory
+      #   with:
+      #     first-arg: ${{ secrets.GITHUB_TOKEN }}
+      #     second-arg: "SECOND ARG"
       # Use the output from the `hello` step
       - name: Get the output project-structure
         run: echo "${{ steps.firstjob.outputs.project-structure }}"
