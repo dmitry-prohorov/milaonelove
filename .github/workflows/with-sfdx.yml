@@ -12,12 +12,12 @@ jobs:
         uses: actions/checkout@v1
       - name: Setup sfdx
         uses: ./actions/setupsfdx
-      - name: Verify sfdx
-        run: which sfdx
       - name: Setup node
         uses: actions/setup-node@v1
+      - name: Setup sfdx
+        uses: ./actions/setupsfdx
       - name: Verify node
-        run: which node && which npm && which sfdx
+        run: which node && which npm
       - name: Check path
         run: echo $PATH
       - name: Verify npm
