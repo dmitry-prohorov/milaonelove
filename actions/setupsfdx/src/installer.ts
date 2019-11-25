@@ -1,5 +1,6 @@
 import * as os from "os";
 import * as path from "path";
+import * as fs from "fs";
 import * as semver from "semver";
 import { exec as childExec } from "child_process";
 import { promisify } from "util";
@@ -99,6 +100,7 @@ async function acquireSfdxCli(versionSpec: string): Promise<string> {
   let extPath: string;
   if (osPlat === "win32") {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
+    console.log((await fs.promises.stat(_7zPath)).isFile());
     extPath = await tc.extract7z(downloadPath, undefined, _7zPath);
   } else {
     extPath = await tc.extractTar(downloadPath, undefined, "xJ");
