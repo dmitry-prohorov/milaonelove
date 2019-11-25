@@ -76,6 +76,10 @@ const os = __importStar(__webpack_require__(87));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.log("Check os settings");
+            console.log(`platform: ${os.platform()}`);
+            console.log(`arch: ${os.arch()}`);
+            console.log(`type: ${os.type()}`);
             core.debug("Check os settings");
             core.debug(`platform: ${os.platform()}`);
             core.debug(`arch: ${os.arch()}`);
