@@ -71,6 +71,7 @@ async function acquireSfdxCli(): Promise<string> {
       throw new Error(`Unexpected OS '${osPlat}'`);
   }
 
+  console.log(`download url: ${urlBase}/${fileName}`);
   const downloadPath: string = await tc.downloadTool(`${urlBase}/${fileName}`);
 
   //
