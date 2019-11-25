@@ -13,7 +13,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
       - name: Setup sfdx
-        uses: ./actions/setup-sfdx
+        uses: ./actions/setupsfdx
       - name: Verify node
         run: node version
       - name: Verify sfdx

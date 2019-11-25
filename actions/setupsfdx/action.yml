@@ -1,0 +1,6 @@
+name: "Setup sfdx-cli environment"
+description: "Setup a sfdx-cli environment and add it to the PATH"
+author: "dmitry-prohorov"
+runs:
+  using: "node12"
+  main: "lib/main.js"
