@@ -1,6 +1,7 @@
 import * as os from "os";
 import * as path from "path";
 import * as fs from "fs";
+import * as uuidV4 from "uuid/v4";
 import { exec as childExec } from "child_process";
 import { promisify } from "util";
 let tempDirectory = process.env["RUNNER_TEMP"] || "";
@@ -98,7 +99,7 @@ async function acquireSfdxCli(): Promise<string> {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
     extPath = await tc.extract7z(downloadPath, undefined, _7zPath);
   } else {
-    extPath = await tc.extractTar(downloadPath);
+    extPath = await extractTar(downloadPath);
   }
 
   //
@@ -108,13 +109,22 @@ async function acquireSfdxCli(): Promise<string> {
   return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
 }
 
-// async function extractTar(file: string, dest: string, flags: string = 'xz') {
-//   dest = dest || (await _createExtractFolder(dest))
-//   const tarPath: string = await io.which('tar', true)
-//   await exec.exec(`"${tarPath}"`, [flags, '-C', dest, '-f', file])
+async function extractTar(file: string, dest?: string, flags: string = "xJf") {
+  dest = dest || (await _createExtractFolder(dest));
+  const tarPath: string = await io.which("tar", true);
+  await exec.exec(`"${tarPath}"`, [flags, "-C", `${dest}/`, "-f", file]);
 
-//   return dest
-// }
+  return dest;
+}
+
+async function _createExtractFolder(dest?: string): Promise<string> {
+  if (!dest) {
+    // create a temp dir
+    dest = path.join(tempDirectory, uuidV4());
+  }
+  await io.mkdirP(dest);
+  return dest;
+}
 
 async function getLatestVersion(): Promise<string> {
   const toolVersionPath = tc.find("sfdx-cli-version", "latest");
