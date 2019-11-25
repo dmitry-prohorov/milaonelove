@@ -14,6 +14,8 @@ jobs:
         uses: ./actions/setupsfdx
       - name: Setup node
         uses: actions/setup-node@v1
+      - name: Check path
+        run: echo $PATH
       - name: Verify node
         run: npm --version
       - name: Verify sfdx

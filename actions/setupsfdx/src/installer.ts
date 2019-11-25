@@ -1,7 +1,6 @@
 import * as os from "os";
 import * as path from "path";
 import * as fs from "fs";
-import uuidV4 from "uuid/v4";
 import { exec as childExec } from "child_process";
 import { promisify } from "util";
 let tempDirectory = process.env["RUNNER_TEMP"] || "";
@@ -33,7 +32,6 @@ const tempSfdxCliVersionFile = path.resolve(tempDirectory, "version.txt");
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-import * as io from "@actions/io";
 import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
@@ -67,8 +65,7 @@ export async function getSfdxCli() {
   //
   // prepend the tools path. instructs the agent to prepend for future tasks
   core.addPath(toolPath);
-  console.log(await io.which("sfdx"));
-
+  console.log(process.env["PATH"]);
   // update sfdx cli to latest version
   await exec.exec("sfdx", ["update"]);
 
