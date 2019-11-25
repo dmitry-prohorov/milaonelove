@@ -10,10 +10,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Setup node
-        uses: actions/setup-node@v1
       - name: Setup sfdx
         uses: ./actions/setupsfdx
+      - name: Setup node
+        uses: actions/setup-node@v1
       - name: Verify node
         run: npm --version
       - name: Verify sfdx

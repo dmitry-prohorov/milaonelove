@@ -63,10 +63,11 @@ export async function getSfdxCli() {
     toolPath = path.join(toolPath, "bin");
   }
 
-  console.log("toolPath: ", toolPath);
+  console.log(await fs.promises.readdir(toolPath));
   //
   // prepend the tools path. instructs the agent to prepend for future tasks
   core.addPath(toolPath);
+  console.log(io.which("sfdx"));
 
   // update sfdx cli to latest version
   await exec.exec("sfdx", ["update"]);
