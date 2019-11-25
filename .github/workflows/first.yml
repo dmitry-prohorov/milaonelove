@@ -1,21 +1,21 @@
-on: [push]
+# on: [push]
 
-jobs:
-  my-first-action-check:
-    runs-on: ubuntu-latest
-    name: my first job
-    steps:
-      # To use this repository's private action, you must check out the repository
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Setup node
-        uses: actions/setup-node@v1
-      - name: first job
-        id: firstjob
-        uses: ./actions/first-docker-action # Uses an action in the root directory
-        with:
-          first-arg: ${{ secrets.GITHUB_TOKEN }}
-          second-arg: "SECOND ARG"
-      # Use the output from the `first job` step
-      - name: Get the output project-structure
-        run: echo "${{ steps.firstjob.outputs.project-structure }}"
+# jobs:
+#   my-first-action-check:
+#     runs-on: ubuntu-latest
+#     name: my first job
+#     steps:
+#       # To use this repository's private action, you must check out the repository
+#       - name: Checkout
+#         uses: actions/checkout@v1
+#       - name: Setup node
+#         uses: actions/setup-node@v1
+#       - name: first job
+#         id: firstjob
+#         uses: ./actions/first-docker-action # Uses an action in the root directory
+#         with:
+#           first-arg: ${{ secrets.GITHUB_TOKEN }}
+#           second-arg: "SECOND ARG"
+#       # Use the output from the `first job` step
+#       - name: Get the output project-structure
+#         run: echo "${{ steps.firstjob.outputs.project-structure }}"

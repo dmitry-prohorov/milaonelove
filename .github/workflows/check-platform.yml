@@ -1,0 +1,13 @@
+on: [push]
+
+jobs:
+  check-platform:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, ubuntu-18.04, windows-latest, macos-latest]
+    name: my first job
+    steps:
+      - name: Check platform
+        id: firstjob
+        uses: ./actions/check-platform # Uses an action in the root directory

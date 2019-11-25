@@ -1,0 +1,6 @@
+name: "Check platform info"
+description: "Check platform info"
+author: "d-pro"
+runs:
+  using: "node12"
+  main: "lib/index.js"
