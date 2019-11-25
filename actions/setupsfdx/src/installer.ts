@@ -132,7 +132,7 @@ async function acquireSfdxCli(): Promise<string> {
         <string>process.env["RUNNER_TOOL_CACHE"],
         "node",
         "10.17.0",
-        "x6.complete"
+        "x64.complete"
       )
     )
   );
