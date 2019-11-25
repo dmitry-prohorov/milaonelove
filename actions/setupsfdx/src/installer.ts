@@ -59,13 +59,13 @@ async function acquireSfdxCli(): Promise<string> {
   switch (osPlat) {
     case "win32":
       // On windows use the USERPROFILE env variable
-      fileName = `sfdx-${urlBase}-windows-${osArch}.exe`;
+      fileName = `sfdx-windows-${osArch}.exe`;
       break;
     case "darwin":
-      fileName = `sfdx-${urlBase}-osx.pkg`;
+      fileName = `sfdx-osx.pkg`;
       break;
     case "linux":
-      fileName = `sfdx-${urlBase}-linux-${osArch}.tar.xz`;
+      fileName = `sfdx-linux-${osArch}.tar.xz`;
       break;
     default:
       throw new Error(`Unexpected OS '${osPlat}'`);
