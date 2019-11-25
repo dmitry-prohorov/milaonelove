@@ -5,7 +5,7 @@
   "description": "TypeScript template action",
   "main": "lib/main.js",
   "scripts": {
-    "build": "./node_modules/.bin/ncc build src/main.ts -o lib -m",
+    "build": "./node_modules/.bin/ncc build src/main.ts -o lib",
     "test": "jest"
   },
   "repository": {

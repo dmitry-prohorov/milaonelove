@@ -99,7 +99,7 @@ async function acquireSfdxCli(): Promise<string> {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
     extPath = await tc.extract7z(downloadPath, undefined, _7zPath);
   } else {
-    extPath = await extractTar(downloadPath);
+    extPath = await extractTar(downloadPath, undefined, "xJ");
   }
 
   //
@@ -109,7 +109,7 @@ async function acquireSfdxCli(): Promise<string> {
   return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
 }
 
-async function extractTar(file: string, dest?: string, flags: string = "xJf") {
+async function extractTar(file: string, dest?: string, flags: string = "xz") {
   dest = dest || (await _createExtractFolder(dest));
   const tarPath: string = await io.which("tar", true);
   await exec.exec(`"${tarPath}"`, [flags, "-C", `${dest}/`, "-f", file]);
