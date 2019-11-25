@@ -111,35 +111,35 @@ async function acquireSfdxCli(): Promise<string> {
   );
   console.log(
     await fs.promises.readdir(
-      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"], "node")
+      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"], "Ruby")
     )
   );
-  console.log(
-    await fs.promises.readdir(
-      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"], "node", "10.17.0")
-    )
-  );
-  console.log(
-    await fs.promises.readdir(
-      path.resolve(
-        <string>process.env["RUNNER_TOOL_CACHE"],
-        "node",
-        "10.17.0",
-        "x64"
-      )
-    )
-  );
-  console.log(
-    await fs.promises.readFile(
-      path.resolve(
-        <string>process.env["RUNNER_TOOL_CACHE"],
-        "node",
-        "10.17.0",
-        "x64.complete"
-      ),
-      "utf8"
-    )
-  );
+  // console.log(
+  //   await fs.promises.readdir(
+  //     path.resolve(<string>process.env["RUNNER_TOOL_CACHE"], "node", "10.17.0")
+  //   )
+  // );
+  // console.log(
+  //   await fs.promises.readdir(
+  //     path.resolve(
+  //       <string>process.env["RUNNER_TOOL_CACHE"],
+  //       "node",
+  //       "10.17.0",
+  //       "x64"
+  //     )
+  //   )
+  // );
+  // console.log(
+  //   await fs.promises.readFile(
+  //     path.resolve(
+  //       <string>process.env["RUNNER_TOOL_CACHE"],
+  //       "node",
+  //       "10.17.0",
+  //       "x64.complete"
+  //     ),
+  //     "utf8"
+  //   )
+  // );
 
   console.log((await fs.promises.stat(downloadPath)).isFile());
   let extPath: string;
