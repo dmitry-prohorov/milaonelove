@@ -8,7 +8,7 @@ jobs:
         os: [ubuntu-16.04, ubuntu-18.04, windows-latest, macos-latest]
     name: my first job
     steps:
-    - name: Setup node
+      - name: Setup node
         uses: actions/setup-node@v1
       - name: Check platform
         id: firstjob
