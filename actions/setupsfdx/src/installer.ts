@@ -129,13 +129,14 @@ async function acquireSfdxCli(): Promise<string> {
     )
   );
   console.log(
-    await fs.promises.readdir(
+    await fs.promises.readFile(
       path.resolve(
         <string>process.env["RUNNER_TOOL_CACHE"],
         "node",
         "10.17.0",
         "x64.complete"
-      )
+      ),
+      "utf8"
     )
   );
 
