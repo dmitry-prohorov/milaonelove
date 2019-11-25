@@ -135,7 +135,7 @@ async function getLatestVersion(): Promise<string> {
   return toolVersionPath;
 }
 
-async function saveLatestVersion(version: string): Promise<void> {
+async function saveLatestVersion(version: string): Promise<string> {
   // Create folder to store sfdx-cli version
   await io.mkdirP(sfdxCliConfig);
 
@@ -145,7 +145,7 @@ async function saveLatestVersion(version: string): Promise<void> {
     { encoding: "utf8" }
   );
 
-  await tc.cacheDir(sfdxCliConfig, "sfdx-cli-version", "latest");
+  return tc.cacheDir(sfdxCliConfig, "sfdx-cli-version", "latest");
 }
 
 // map arch to download dist url format https://developer.salesforce.com/media/salesforce-cli
