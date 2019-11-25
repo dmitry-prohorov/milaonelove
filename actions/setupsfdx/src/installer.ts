@@ -99,9 +99,8 @@ async function acquireSfdxCli(versionSpec: string): Promise<string> {
   //
   let extPath: string;
   if (osPlat === "win32") {
-    let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
-    console.log((await fs.promises.stat(_7zPath)).isFile());
-    extPath = await tc.extract7z(downloadPath, undefined, _7zPath);
+    // let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
+    extPath = await tc.extract7z(downloadPath);
   } else {
     extPath = await tc.extractTar(downloadPath, undefined, "xJ");
   }
