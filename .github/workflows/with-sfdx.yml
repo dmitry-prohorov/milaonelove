@@ -15,6 +15,6 @@ jobs:
       - name: Setup sfdx
         uses: ./actions/setupsfdx
       - name: Verify node
-        run: node version
+        run: npm --version
       - name: Verify sfdx
         run: sfdx version

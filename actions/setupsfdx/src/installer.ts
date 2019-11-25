@@ -39,7 +39,7 @@ import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
   const toolVersionPath = tc.find("sfdx-cli-version", "latest");
-  console.log(toolVersionPath);
+  console.log("start sfdx-cli-version: ", toolVersionPath);
   // always check latest version
   let toolPath = tc.find("sfdx-cli", "latest");
 
@@ -122,6 +122,7 @@ async function acquireSfdxCli(): Promise<string> {
 
 async function getLatestVersion(): Promise<string> {
   const toolVersionPath = tc.find("sfdx-cli-version", "latest");
+  console.log("request sfdx-cli-version: ", toolVersionPath);
   if (!toolVersionPath) {
     await saveLatestVersion(DEFAULT_LATEST_VERSION);
     return DEFAULT_LATEST_VERSION;
