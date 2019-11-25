@@ -69,7 +69,7 @@ export async function getSfdxCli() {
 }
 
 async function acquireSfdxCli(): Promise<string> {
-  const version = getLatestVersion();
+  const version = await getLatestVersion();
   console.log(version);
   const urlBase =
     "https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/";
