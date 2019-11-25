@@ -4800,9 +4800,10 @@ function getLatestVersion() {
         console.log("request sfdx-cli-version: ", toolVersionPath);
         if (!toolVersionPath) {
             yield saveLatestVersion(DEFAULT_LATEST_VERSION);
+            console.log("request sfdx-cli-version: ", tc.find("sfdx-cli-version", "latest"));
             return DEFAULT_LATEST_VERSION;
         }
-        return fs.promises.readFile(sfdxCliVersionFile, "utf8");
+        return toolVersionPath;
     });
 }
 function saveLatestVersion(version) {

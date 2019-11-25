@@ -125,10 +125,14 @@ async function getLatestVersion(): Promise<string> {
   console.log("request sfdx-cli-version: ", toolVersionPath);
   if (!toolVersionPath) {
     await saveLatestVersion(DEFAULT_LATEST_VERSION);
+    console.log(
+      "request sfdx-cli-version: ",
+      tc.find("sfdx-cli-version", "latest")
+    );
     return DEFAULT_LATEST_VERSION;
   }
 
-  return fs.promises.readFile(sfdxCliVersionFile, "utf8");
+  return toolVersionPath;
 }
 
 async function saveLatestVersion(version: string): Promise<void> {
