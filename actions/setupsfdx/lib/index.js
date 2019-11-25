@@ -4719,7 +4719,8 @@ const io = __importStar(__webpack_require__(1));
 const tc = __importStar(__webpack_require__(533));
 function getSfdxCli() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(yield fs.promises.readFile(sfdxCliVersionFile, "utf8"));
+        const toolVersionPath = tc.find("sfdx-cli-version", "latest");
+        console.log(toolVersionPath);
         // always check latest version
         let toolPath = tc.find("sfdx-cli", "latest");
         // If not found in cache => download, extract, cache

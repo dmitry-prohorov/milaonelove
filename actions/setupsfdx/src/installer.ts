@@ -38,7 +38,8 @@ import * as io from "@actions/io";
 import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
-  console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
+  const toolVersionPath = tc.find("sfdx-cli-version", "latest");
+  console.log(toolVersionPath);
   // always check latest version
   let toolPath = tc.find("sfdx-cli", "latest");
 
