@@ -13,10 +13,12 @@ jobs:
       - name: Setup sfdx
         uses: ./actions/setupsfdx
       - name: Verify sfdx
-        run: ls -lat
+        run: which sfdx
       - name: Setup node
         uses: actions/setup-node@v1
+      - name: Verify node
+        run: which node && which npm && which sfdx
       - name: Check path
         run: echo $PATH
-      - name: Verify node
+      - name: Verify npm
         run: npm --version
