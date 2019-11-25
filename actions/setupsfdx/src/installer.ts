@@ -38,7 +38,7 @@ import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
   // always check latest version
-  let toolPath = tc.find("sfdx-cli", "latest");
+  let toolPath = tc.find("sfdx", "latest");
   console.log("toolPath: ", toolPath);
 
   // If not found in cache => download, extract, cache
@@ -157,7 +157,7 @@ async function acquireSfdxCli(): Promise<string> {
   //
   let toolRoot = path.join(extPath, fileName);
   console.log("toolRoot: ", toolRoot);
-  return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
+  return await tc.cacheDir(toolRoot, "sfdx", "latest");
 }
 
 // async function getLatestVersion(): Promise<string> {
@@ -181,12 +181,7 @@ async function saveLatestVersion(version: string): Promise<string> {
     encoding: "utf8"
   });
 
-  return tc.cacheFile(
-    tempSfdxCliVersionFile,
-    "version.txt",
-    "sfdx-cli",
-    "latest"
-  );
+  return tc.cacheFile(tempSfdxCliVersionFile, "version.txt", "sfdx", "latest");
 }
 
 // map arch to download dist url format https://developer.salesforce.com/media/salesforce-cli
