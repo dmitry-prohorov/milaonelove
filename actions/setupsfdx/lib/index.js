@@ -4780,8 +4780,10 @@ function acquireSfdxCli() {
             extPath = yield tc.extract7z(downloadPath, undefined, _7zPath);
         }
         else {
-            extPath = yield extractTar(downloadPath, undefined, "xJ");
+            extPath = yield tc.extractTar(downloadPath, undefined, "xJ");
         }
+        console.log(extPath);
+        console.log(yield fs.promises.readdir(extPath));
         //
         // Install into the local tool cache - node extracts with a root folder that matches the fileName downloaded
         //
