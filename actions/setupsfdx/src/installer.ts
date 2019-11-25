@@ -91,6 +91,7 @@ async function acquireSfdxCli(): Promise<string> {
   console.log(fileName);
   console.log(await fs.promises.readdir(<string>process.env["RUNNER_TEMP"]));
   console.log((await fs.promises.stat(downloadPath)).isFile());
+  console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   let extPath: string;
   if (osPlat === "win32") {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
