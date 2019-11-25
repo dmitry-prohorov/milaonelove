@@ -42,6 +42,7 @@ export async function getSfdxCli() {
   console.log("start sfdx-cli-version: ", toolVersionPath);
   // always check latest version
   let toolPath = tc.find("sfdx-cli", "latest");
+  console.log("toolPath: ", toolPath);
 
   // If not found in cache => download, extract, cache
   if (!toolPath) {
@@ -57,6 +58,7 @@ export async function getSfdxCli() {
     toolPath = path.join(toolPath, "bin");
   }
 
+  console.log("toolPath: ", toolPath);
   //
   // prepend the tools path. instructs the agent to prepend for future tasks
   core.addPath(toolPath);
@@ -67,6 +69,7 @@ export async function getSfdxCli() {
   const { stdout } = await execa("sfdx version");
   if (stdout) {
     const version = (stdout.split(" ").shift() || "").replace("/", "-v");
+    console.log("version: ", toolPath);
     await saveLatestVersion(version);
     console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   }
@@ -100,6 +103,9 @@ async function acquireSfdxCli(): Promise<string> {
   console.log(fileName);
   console.log(downloadPath);
   console.log(await fs.promises.readdir(<string>process.env["RUNNER_TEMP"]));
+  console.log(
+    await fs.promises.readdir(<string>process.env["RUNNER_TOOL_CACHE"])
+  );
   console.log((await fs.promises.stat(downloadPath)).isFile());
   console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   let extPath: string;
