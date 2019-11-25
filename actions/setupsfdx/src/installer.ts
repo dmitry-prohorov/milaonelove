@@ -46,6 +46,12 @@ export async function getSfdxCli() {
     toolPath = await acquireSfdxCli();
   }
 
+  console.log(
+    await fs.promises.readdir(
+      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"])
+    )
+  );
+
   //
   // a tool installer initimately knows details about the layout of that tool
   // for example, node binary is in the bin folder after the extract on Mac/Linux.
@@ -112,7 +118,22 @@ async function acquireSfdxCli(): Promise<string> {
   );
   console.log(
     await fs.promises.readdir(
-      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"], "node", "10.17.0")
+      path.resolve(
+        <string>process.env["RUNNER_TOOL_CACHE"],
+        "node",
+        "10.17.0",
+        "x64"
+      )
+    )
+  );
+  console.log(
+    await fs.promises.readdir(
+      path.resolve(
+        <string>process.env["RUNNER_TOOL_CACHE"],
+        "node",
+        "10.17.0",
+        "x6.complete"
+      )
     )
   );
 
