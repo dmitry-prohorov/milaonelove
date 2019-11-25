@@ -69,7 +69,7 @@ export async function getSfdxCli() {
   const { stdout } = await execa("sfdx version");
   if (stdout) {
     const version = (stdout.split(" ").shift() || "").replace("/", "-v");
-    console.log("version: ", toolPath);
+    console.log("version: ", version);
     await saveLatestVersion(version);
     console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   }
@@ -122,6 +122,26 @@ async function acquireSfdxCli(): Promise<string> {
   );
   console.log(
     await fs.promises.readdir(
+      path.join(
+        <string>process.env["RUNNER_TOOL_CACHE"],
+        "sfdx-cli-version",
+        "latest",
+        "x64"
+      )
+    )
+  );
+  console.log(
+    await fs.promises.readdir(
+      path.join(
+        <string>process.env["RUNNER_TOOL_CACHE"],
+        "sfdx-cli-version",
+        "latest",
+        "x64.complete"
+      )
+    )
+  );
+  console.log(
+    await fs.promises.readdir(
       path.join(<string>process.env["RUNNER_TOOL_CACHE"], "node")
     )
   );
@@ -142,6 +162,7 @@ async function acquireSfdxCli(): Promise<string> {
   // Install into the local tool cache - node extracts with a root folder that matches the fileName downloaded
   //
   let toolRoot = path.join(extPath, fileName);
+  console.log("toolRoot: ", toolRoot);
   return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
 }
 
