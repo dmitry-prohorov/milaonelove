@@ -89,17 +89,14 @@ async function acquireSfdxCli(): Promise<string> {
   // Extract
   //
   console.log(fileName);
-  console.log(downloadPath);
+  console.log(await fs.promises.readdir(<string>process.env["RUNNER_TEMP"]));
+  console.log((await fs.promises.stat(downloadPath)).isFile());
   let extPath: string;
   if (osPlat === "win32") {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
     extPath = await tc.extract7z(downloadPath, undefined, _7zPath);
   } else {
-    extPath = await tc.extractTar(
-      downloadPath,
-      undefined,
-      "xJf --strip-components 1"
-    );
+    extPath = await tc.extractTar(downloadPath, undefined, "xJf");
   }
 
   //
