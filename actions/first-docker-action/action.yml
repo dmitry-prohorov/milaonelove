@@ -10,7 +10,4 @@ outputs:
     description: "project structure"
 runs:
   using: "node12"
-  main: "index.js"
-  args:
-    - ${{ inputs.first-arg }}
-    - ${{ inputs.second-arg }}
+  main: "dist/index.js"
