@@ -29,8 +29,7 @@ if (!tempDirectory) {
   }
   tempDirectory = path.join(baseLocation, "actions", "temp");
 }
-const sfdxCliConfig = path.join(tempDirectory, "sfdx-cli-config");
-const sfdxCliVersionFile = path.resolve(sfdxCliConfig, "version.txt");
+const tempSfdxCliVersionFile = path.resolve(tempDirectory, "version.txt");
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
@@ -38,8 +37,6 @@ import * as io from "@actions/io";
 import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
-  const toolVersionPath = tc.find("sfdx-cli-version", "latest");
-  console.log("start sfdx-cli-version: ", toolVersionPath);
   // always check latest version
   let toolPath = tc.find("sfdx-cli", "latest");
   console.log("toolPath: ", toolPath);
@@ -71,13 +68,10 @@ export async function getSfdxCli() {
     const version = (stdout.split(" ").shift() || "").replace("/", "-v");
     console.log("version: ", version);
     await saveLatestVersion(version);
-    console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   }
 }
 
 async function acquireSfdxCli(): Promise<string> {
-  const version = await getLatestVersion();
-  console.log(version);
   const urlBase =
     "https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable";
   // sfdx-cli-v7.33.2-045d48473e-darwin-x64.tar.xz
@@ -86,10 +80,10 @@ async function acquireSfdxCli(): Promise<string> {
   let fileName: string;
   let urlFileName: string;
   if (osPlat === "win32") {
-    fileName = `${version}-${osArch}`;
+    fileName = `${DEFAULT_LATEST_VERSION}-${osArch}`;
     urlFileName = `${fileName}.exe`;
   } else {
-    fileName = `${version}-${osPlat}-${osArch}`;
+    fileName = `${DEFAULT_LATEST_VERSION}-${osPlat}-${osArch}`;
     urlFileName = `${fileName}.tar.xz`;
   }
   console.log(`download url: ${urlBase}/${fileName}`);
@@ -106,38 +100,8 @@ async function acquireSfdxCli(): Promise<string> {
   console.log(
     await fs.promises.readdir(<string>process.env["RUNNER_TOOL_CACHE"])
   );
-  console.log(
-    await fs.promises.readdir(
-      path.join(<string>process.env["RUNNER_TOOL_CACHE"], "sfdx-cli-version")
-    )
-  );
-  console.log(
-    await fs.promises.readdir(
-      path.join(
-        <string>process.env["RUNNER_TOOL_CACHE"],
-        "sfdx-cli-version",
-        "latest"
-      )
-    )
-  );
-  console.log(
-    await fs.promises.readFile(
-      path.join(
-        <string>process.env["RUNNER_TOOL_CACHE"],
-        "sfdx-cli-version",
-        "latest",
-        "version.txt"
-      )
-    ),
-    "utf8"
-  );
-  console.log(
-    await fs.promises.readdir(
-      path.join(<string>process.env["RUNNER_TOOL_CACHE"], "node")
-    )
-  );
+
   console.log((await fs.promises.stat(downloadPath)).isFile());
-  console.log(await fs.promises.readFile(sfdxCliVersionFile, "utf8"));
   let extPath: string;
   if (osPlat === "win32") {
     let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
@@ -157,32 +121,33 @@ async function acquireSfdxCli(): Promise<string> {
   return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
 }
 
-async function getLatestVersion(): Promise<string> {
-  const toolVersionPath = tc.find("sfdx-cli-version", "latest");
-  console.log("request sfdx-cli-version: ", toolVersionPath);
-  if (!toolVersionPath) {
-    await saveLatestVersion(DEFAULT_LATEST_VERSION);
-    console.log(
-      "request sfdx-cli-version: ",
-      tc.find("sfdx-cli-version", "latest")
-    );
-    return DEFAULT_LATEST_VERSION;
-  }
+// async function getLatestVersion(): Promise<string> {
+//   const toolVersionPath = tc.find("sfdx-cli", "latest");
+//   console.log("request sfdx-cli-version: ", toolVersionPath);
+//   if (!toolVersionPath) {
+//     await saveLatestVersion(DEFAULT_LATEST_VERSION);
+//     console.log(
+//       "request sfdx-cli-version: ",
+//       tc.find("sfdx-cli-version", "latest")
+//     );
+//     return DEFAULT_LATEST_VERSION;
+//   }
 
-  return toolVersionPath;
-}
+//   return toolVersionPath;
+// }
 
 async function saveLatestVersion(version: string): Promise<string> {
   // Create folder to store sfdx-cli version
-  await io.mkdirP(sfdxCliConfig);
+  await fs.promises.writeFile(tempSfdxCliVersionFile, version, {
+    encoding: "utf8"
+  });
 
-  await fs.promises.writeFile(
-    path.resolve(sfdxCliConfig, "version.txt"),
-    version,
-    { encoding: "utf8" }
+  return tc.cacheFile(
+    tempSfdxCliVersionFile,
+    "version.txt",
+    "sfdx-cli",
+    "latest"
   );
-
-  return tc.cacheDir(sfdxCliConfig, "sfdx-cli-version", "latest");
 }
 
 // map arch to download dist url format https://developer.salesforce.com/media/salesforce-cli
