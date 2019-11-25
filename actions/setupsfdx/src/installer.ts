@@ -35,6 +35,11 @@ import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
 
 export async function getSfdxCli() {
+  console.log(
+    await fs.promises.readdir(
+      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"])
+    )
+  );
   // always check latest version
   let toolPath = tc.find("sfdx", "latest");
   console.log("toolPath: ", toolPath);
@@ -45,11 +50,6 @@ export async function getSfdxCli() {
   }
 
   console.log("toolPath: ", toolPath);
-  console.log(
-    await fs.promises.readdir(
-      path.resolve(<string>process.env["RUNNER_TOOL_CACHE"])
-    )
-  );
   console.log(await fs.promises.readdir(toolPath));
 
   //
