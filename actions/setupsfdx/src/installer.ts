@@ -1,7 +1,7 @@
 import * as os from "os";
 import * as path from "path";
 import * as fs from "fs";
-import * as uuidV4 from "uuid/v4";
+import uuidV4 from "uuid/v4";
 import { exec as childExec } from "child_process";
 import { promisify } from "util";
 let tempDirectory = process.env["RUNNER_TEMP"] || "";
@@ -109,7 +109,11 @@ async function acquireSfdxCli(): Promise<string> {
   return await tc.cacheDir(toolRoot, "sfdx-cli", "latest");
 }
 
-async function extractTar(file: string, dest?: string, flags: string = "xz") {
+async function extractTar(
+  file: string,
+  dest?: string,
+  flags: string = "xz"
+): Promise<string> {
   dest = dest || (await _createExtractFolder(dest));
   const tarPath: string = await io.which("tar", true);
   await exec.exec(`"${tarPath}"`, [flags, "-C", `${dest}/`, "-f", file]);
