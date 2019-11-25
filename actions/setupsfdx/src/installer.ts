@@ -72,7 +72,7 @@ async function acquireSfdxCli(): Promise<string> {
   const version = await getLatestVersion();
   console.log(version);
   const urlBase =
-    "https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/";
+    "https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable";
   // sfdx-cli-v7.33.2-045d48473e-darwin-x64.tar.xz
   const osArch: string = translateArchToDistUrl(os.arch());
 
