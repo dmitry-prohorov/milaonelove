@@ -4827,7 +4827,8 @@ function extractWin(downloadPath) {
         yield io.mkdirP(tempDir);
         yield io.cp(downloadPath, path.join(tempDir, "sfdx.zip"));
         console.log(yield fs.promises.readdir(tempDir));
-        return yield tc.extractZip(path.join(tempDir, "sfdx.zip"));
+        let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
+        return yield tc.extract7z(path.join(tempDir, "sfdx.zip"), undefined, _7zPath);
     });
 }
 // map arch to download dist url format

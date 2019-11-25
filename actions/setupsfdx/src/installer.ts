@@ -156,8 +156,9 @@ async function extractWin(downloadPath: string): Promise<string> {
 
   await io.cp(downloadPath, path.join(tempDir, "sfdx.zip"));
   console.log(await fs.promises.readdir(tempDir));
+  let _7zPath = path.join(__dirname, "..", "externals", "7zr.exe");
 
-  return await tc.extractZip(path.join(tempDir, "sfdx.zip"));
+  return await tc.extract7z(path.join(tempDir, "sfdx.zip"), undefined, _7zPath);
 }
 
 // map arch to download dist url format
